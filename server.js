@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const exphbs = require("express-handlebars"),
+const exphbs = require("express-handlebars");
+const logger = require("morgan");
 
 
 // Our scraping tools
@@ -45,8 +46,8 @@ app.get("/scrape", (req, res) => {
         // Save the text of the element in a "title" variable
         // const title = $(element).text();
   
-        // In the currently selected element, look at its child elements (i.e., its a-tags),
-        // then save the values for any "href" attributes that the child elements may have
+        // // In the currently selected element, look at its child elements (i.e., its a-tags),
+        // // then save the values for any "href" attributes that the child elements may have
         // const link = $(element).find("h1").find("a").attr("href");
   
         // Save these results in an object that we'll push into the results array we defined earlier
@@ -55,12 +56,9 @@ app.get("/scrape", (req, res) => {
         //   link: link
         // });
 
-        result.title = $(this)
-        .children("a")
-        .text();
-      result.link = $(this)
-        .children("a")
-        .attr("href");
+        results.title = $(element).text();
+
+       results.link = $(element).find("h1").find("a").attr("href");
 
         db.Article.create(results)
         .then((dbArticle) => {
@@ -75,7 +73,7 @@ app.get("/scrape", (req, res) => {
       res.send("Scrape Complete");
 
       // Log the results once you've looped through each of the elements found with cheerio
-    //   console.log(results);
+      console.log(results);
     });
   });
   app.get("/articles", (req, res) => {
