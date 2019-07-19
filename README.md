@@ -6,8 +6,9 @@
   * express
   * mongoose
   * cheerio
-  * request
   * morgan
+  * axios
+  * loger
   
  ## Overview
  
